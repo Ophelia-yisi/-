@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>查收你的立冬祝福❄️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #001f3f, #000);
+      overflow: hidden;
+      font-family: "Comic Sans MS", "Arial", sans-serif;
+      color: white;
+    }
+
+    h1 {
+      font-size: 3em;
+      text-shadow: 0 0 10px #fff, 0 0 30px #6cf, 0 0 60px #9cf;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #6cf, 0 0 30px #9cf;
+      }
+      to {
+        text-shadow: 0 0 20px #fff, 0 0 40px #0ff, 0 0 80px #6ff;
+      }
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2.5rem;
+      animation: float 6s linear infinite;
+      user-select: none;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+      }
+      30% { opacity: 1; }
+      to {
+        transform: translateY(-10vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 1rem;
+      color: #ccc;
+      text-shadow: 0 0 5px #fff3;
+    }
+  </style>
+</head>
+<body>
+  <h1>✨徐震宇是奶龙✨</h1>
+  <footer>查收你的立冬祝福 ❄️</footer>
+
+  <script>
+    const emojis = ["😋", "🤪", "😜", "🤓"];
+    const num = 40;
+
+    for (let i = 0; i < num; i++) {
+      const e = document.createElement("div");
+      e.className = "emoji";
+      e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      e.style.left = Math.random() * 100 + "vw";
+      e.style.animationDelay = Math.random() * 6 + "s";
+      e.style.animationDuration = 5 + Math.random() * 5 + "s";
+      document.body.appendChild(e);
+    }
+  </script>
+</body>
+</html>
