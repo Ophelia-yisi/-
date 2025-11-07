@@ -8,18 +8,19 @@
     body {
       margin: 0;
       height: 100vh;
+      background: linear-gradient(160deg, #0b0023, #001f3f, #090029);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, #001f3f, #000);
       overflow: hidden;
       font-family: "Comic Sans MS", "Arial", sans-serif;
       color: white;
+      position: relative;
     }
 
     h1 {
-      font-size: 3em;
+      font-size: 2em;
       text-shadow: 0 0 10px #fff, 0 0 30px #6cf, 0 0 60px #9cf;
       animation: glow 2s ease-in-out infinite alternate;
     }
@@ -33,51 +34,147 @@
       }
     }
 
-    .emoji {
-      position: absolute;
-      font-size: 2.5rem;
-      animation: float 6s linear infinite;
-      user-select: none;
+    .envelope {
+      width: 240px;
+      height: 160px;
+      background: #ffb6c1;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 0 15px #fff6;
+      transition: transform 0.4s ease, box-shadow 0.3s;
     }
 
-    @keyframes float {
-      from {
-        transform: translateY(110vh) rotate(0deg);
-        opacity: 0;
-      }
-      30% { opacity: 1; }
-      to {
-        transform: translateY(-10vh) rotate(720deg);
-        opacity: 0;
-      }
+    .envelope:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #fff;
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: #ffc0cb;
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top;
+      transition: transform 0.8s ease;
+      z-index: 2;
+    }
+
+    .letter {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
+      width: 90%;
+      height: 60%;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 4em;
+      font-size: 1.5em;
+      color: #333;
+      opacity: 0;
+      transition: opacity 1s ease;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    .open .flap {
+      transform: rotateX(180deg);
+    }
+
+    .open .letter {
+      opacity: 1;
+    }
+
+    .open .envelope {
+      display: none;
     }
 
     footer {
       position: absolute;
-      bottom: 10px;
+      bottom: 15px;
       font-size: 1rem;
       color: #ccc;
       text-shadow: 0 0 5px #fff3;
     }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: explode 1s forwards;
+      opacity: 0;
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) translate(0, 0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5) translate(20px, 20px);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0) translate(100vw, -100vh);
+      }
+    }
+
+    /* 让文字发光 */
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #6cf, 0 0 30px #9cf;
+      }
+      to {
+        text-shadow: 0 0 20px #fff, 0 0 40px #0ff, 0 0 80px #6ff;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>✨徐震宇是奶龙✨</h1>
-  <footer>查收你的立冬祝福 ❄️</footer>
+  <div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <div class="letter">
+      ✨徐震宇是奶龙✨
+    </div>
+  </div>
+  <h1>查收你的立冬祝福❄️</h1>
+  <footer>点击信封打开哦 💌</footer>
+
+  <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2022/08/05/audio_9a46a11cf9.mp3?filename=happy-day-112194.mp3" preload="auto"></audio>
 
   <script>
+    const envelope = document.getElementById("envelope");
+    const bgm = document.getElementById("bgm");
     const emojis = ["😋", "🤪", "😜", "🤓"];
-    const num = 40;
+    const num = 30;
 
     for (let i = 0; i < num; i++) {
       const e = document.createElement("div");
       e.className = "emoji";
       e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
       e.style.left = Math.random() * 100 + "vw";
-      e.style.animationDelay = Math.random() * 6 + "s";
-      e.style.animationDuration = 5 + Math.random() * 5 + "s";
+      e.style.top = Math.random() * 100 + "vh";
+      e.style.animationDelay = Math.random() * 1 + "s";
       document.body.appendChild(e);
     }
+
+    let opened = false;
+    envelope.addEventListener("click", () => {
+      if (!opened) {
+        envelope.classList.add("open");
+        bgm.play().catch(() => {});
+        const emojis = document.querySelectorAll(".emoji");
+        emojis.forEach((emoji, index) => {
+          emoji.style.animationDelay = (index * 0.1) + "s";
+        });
+        opened = true;
+      }
+    });
   </script>
 </body>
 </html>
